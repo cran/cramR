@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Cram Policy part 2</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Cram Policy part 2</h1>
+
+
+
+<div id="cram-policy" class="section level1">
+<h1>Cram Policy</h1>
+<p>In the article <em>“Introduction &amp; Cram Policy Part 1”</em>, we
+introduced the Cram method, which enables simultaneous learning and
+evaluation of a binary policy. We outlined the primary parameters of the
+<code>cram_policy()</code> function and demonstrated its application
+using an example dataset. In this section, we provide a more detailed
+discussion on how to configure these parameters for various use cases,
+depending notably on the nature of the dataset and specific policy
+learning goals.</p>
+<p>We begin by simulating a dataset consisting of covariates
+<code>X</code>, a binary treatment assignment <code>D</code>, and a
+continuous outcome <code>Y</code>, which we will use to demonstrate the
+<code>cram_policy()</code> function.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co"># Function to generate sample data with heterogeneous treatment effects:</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co"># - Positive effect group</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># - Neutral effect group</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co"># - Adverse effect group</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>generate_data <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  X <span class="ot">&lt;-</span> <span class="fu">data.table</span>(</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>    <span class="at">binary =</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.5</span>),                 <span class="co"># Binary variable</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>    <span class="at">discrete =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, n, <span class="at">replace =</span> <span class="cn">TRUE</span>),  <span class="co"># Discrete variable</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>    <span class="at">continuous =</span> <span class="fu">rnorm</span>(n)                       <span class="co"># Continuous variable</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>  )</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>  <span class="co"># Binary treatment assignment (50% treated)</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>  D <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.5</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>  <span class="co"># Define heterogeneous treatment effects based on X</span></span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>  treatment_effect <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>    X[, binary] <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> X[, discrete] <span class="sc">&lt;=</span> <span class="dv">2</span>,        <span class="co"># Group 1: Positive effect</span></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>    <span class="dv">1</span>,</span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>    <span class="fu">ifelse</span>(X[, binary] <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> X[, discrete] <span class="sc">&gt;=</span> <span class="dv">4</span>, <span class="co"># Group 3: Adverse effect</span></span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>           <span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>           <span class="fl">0.1</span>)                                   <span class="co"># Group 2: Neutral effect</span></span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>  )</span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a>  <span class="co"># Outcome depends on treatment effect + noise</span></span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>  Y <span class="ot">&lt;-</span> D <span class="sc">*</span> (treatment_effect <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a>    (<span class="dv">1</span> <span class="sc">-</span> D) <span class="sc">*</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">X =</span> X, <span class="at">D =</span> D, <span class="at">Y =</span> Y))</span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a>}</span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a><span class="co"># Generate a sample dataset</span></span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">generate_data</span>(n)</span>
+<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a>X <span class="ot">&lt;-</span> data<span class="sc">$</span>X</span>
+<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a>D <span class="ot">&lt;-</span> data<span class="sc">$</span>D</span>
+<span id="cb1-38"><a href="#cb1-38" tabindex="-1"></a>Y <span class="ot">&lt;-</span> data<span class="sc">$</span>Y</span></code></pre></div>
+<div id="built-in-model" class="section level2">
+<h2>Built-in Model</h2>
+<p>In this example, we demonstrate how to use the <strong>built-in
+modeling options</strong> provided by the <code>cramR</code> package. We
+walk through the key parameters that control how
+<code>cram_policy()</code> behaves, including the choice of model,
+learner type, baseline policy, and batching strategy.</p>
+<p>These parameters allow flexibility in configuring the learning
+process depending on your use case and nature of your dataset.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Options for batch:</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># Either an integer specifying the number of batches or a vector/list of batch assignments for all individuals</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>batch <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co"># Model type for estimating treatment effects</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co"># Options for model_type: &#39;causal_forest&#39;, &#39;s_learner&#39;, &#39;m_learner&#39;</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co"># Note: you can also set model_type to NULL and specify custom_fit and custom_predict to use your custom model</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>model_type <span class="ot">&lt;-</span> <span class="st">&quot;causal_forest&quot;</span>  </span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co"># Options for learner_type:</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co"># if model_type == &#39;causal_forest&#39;, choose NULL</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co"># if model_type == &#39;s_learner&#39; or &#39;m_learner&#39;, choose between &#39;ridge&#39;, &#39;fnn&#39; and &#39;caret&#39;</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>learner_type <span class="ot">&lt;-</span> <span class="cn">NULL</span>  </span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co"># Baseline policy to compare against (list of 0/1 for each individual)</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co"># Options for baseline_policy:</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="co"># A list representing the baseline policy assignment for each individual.</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co"># If NULL, a default baseline policy of zeros is created.</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co"># Examples of baseline policy: </span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="co"># - All-control baseline: as.list(rep(0, nrow(X))) or NULL</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co"># - Randomized baseline: as.list(sample(c(0, 1), nrow(X), replace = TRUE))</span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>baseline_policy <span class="ot">&lt;-</span> <span class="fu">as.list</span>(<span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">nrow</span>(X)))  </span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co"># Whether to parallelize batch processing (i.e. the cram method learns T policies, with T the number of batches.</span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co"># They are learned in parallel when parallelize_batch is TRUE</span></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co"># vs. learned sequentially using the efficient data.table structure when parallelize_batch is FALSE, recommended for light weight training).</span></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co"># Defaults to FALSE.</span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a>parallelize_batch <span class="ot">&lt;-</span> <span class="cn">FALSE</span>  </span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a> </span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a><span class="co"># Model-specific parameters (more details in the article &quot;Quick Start&quot;)</span></span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="co"># Examples: NULL defaults to the following:</span></span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="co"># - causal_forest: list(num.trees = 100)</span></span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a><span class="co"># - ridge: list(alpha = 1)</span></span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="co"># - caret: list(formula = Y ~ ., caret_params = list(method = &quot;lm&quot;, trControl = trainControl(method = &quot;none&quot;)))</span></span>
+<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a><span class="co"># - fnn (Feedforward Neural Network): see below</span></span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="co"># input_shape &lt;- if (model_type == &quot;s_learner&quot;) ncol(X) + 1 else ncol(X)</span></span>
+<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="co"># default_model_params &lt;- list(</span></span>
+<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a><span class="co">#       input_layer = list(units = 64, activation = &#39;relu&#39;, input_shape = input_shape),</span></span>
+<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a><span class="co">#       layers = list(</span></span>
+<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a><span class="co">#         list(units = 32, activation = &#39;relu&#39;)</span></span>
+<span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a><span class="co">#       ),</span></span>
+<span id="cb2-43"><a href="#cb2-43" tabindex="-1"></a><span class="co">#       output_layer = list(units = 1, activation = &#39;linear&#39;),</span></span>
+<span id="cb2-44"><a href="#cb2-44" tabindex="-1"></a><span class="co">#       compile_args = list(optimizer = &#39;adam&#39;, loss = &#39;mse&#39;),</span></span>
+<span id="cb2-45"><a href="#cb2-45" tabindex="-1"></a><span class="co">#       fit_params = list(epochs = 5, batch_size = 32, verbose = 0)</span></span>
+<span id="cb2-46"><a href="#cb2-46" tabindex="-1"></a><span class="co">#     )</span></span>
+<span id="cb2-47"><a href="#cb2-47" tabindex="-1"></a>model_params <span class="ot">&lt;-</span> <span class="cn">NULL</span>  </span></code></pre></div>
+<div id="how-to-set-model_params" class="section level3">
+<h3>How to set model_params?</h3>
+<p>The <code>model_params</code> argument allows you to customize
+hyperparameters for the model used in policy learning. If left as
+<code>NULL</code>, <code>cram_policy()</code> will fall back to sensible
+defaults depending on the model and learner type. In the following, we
+give default examples of <code>model_params</code> for each
+<code>model_type</code> and <code>learner_type</code> to illustrate how
+you can specify <code>model_params</code>. Generally speaking,
+<code>model_params</code> is a list containing all of the parameters
+used in the underlying model and its values:</p>
+<ul>
+<li><p>For <code>model_type = &quot;causal_forest&quot;</code>:<br />
+When <code>model_params &lt;- NULL</code>, the method defaults to
+<code>grf::causal_forest()</code> with
+<code>model_params &lt;- list(num.trees = 100)</code>.</p></li>
+<li><p>For <code>model_type = &quot;s_learner&quot;</code> or
+<code>&quot;m_learner&quot;</code>, it depends on the
+<code>learner_type</code>:</p>
+<ul>
+<li><p>For <code>learner_type = &quot;ridge&quot;</code>, when
+<code>model_params &lt;- NULL</code>, the method defaults to
+<code>glmnet::cv.glmnet()</code> with
+<code>model_params &lt;- list(alpha = 1)</code>, corresponding to Ridge
+regression.</p></li>
+<li><p>For <code>learner_type = &quot;fnn&quot;</code> (Feedforward Neural
+Network):<br />
+A default Keras model is built with the following architecture:</p></li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Determine the input shape based on model_type</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co"># For s_learner, the treatment D is added to the covariates to constitute the training data</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co"># So the input shape is ncol(X) + 1</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>input_shape <span class="ot">&lt;-</span> <span class="cf">if</span> (model_type <span class="sc">==</span> <span class="st">&quot;s_learner&quot;</span>) <span class="fu">ncol</span>(X) <span class="sc">+</span> <span class="dv">1</span> <span class="cf">else</span> <span class="fu">ncol</span>(X)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>default_model_params <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>    <span class="at">input_layer =</span> <span class="fu">list</span>(<span class="at">units =</span> <span class="dv">64</span>, <span class="at">activation =</span> <span class="st">&#39;relu&#39;</span>, <span class="at">input_shape =</span> input_shape), </span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>    <span class="at">layers =</span> <span class="fu">list</span>(</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>      <span class="fu">list</span>(<span class="at">units =</span> <span class="dv">32</span>, <span class="at">activation =</span> <span class="st">&#39;relu&#39;</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>    ),</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>    <span class="at">output_layer =</span> <span class="fu">list</span>(<span class="at">units =</span> <span class="dv">1</span>, <span class="at">activation =</span> <span class="st">&#39;linear&#39;</span>),</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>    <span class="at">compile_args =</span> <span class="fu">list</span>(<span class="at">optimizer =</span> <span class="st">&#39;adam&#39;</span>, <span class="at">loss =</span> <span class="st">&#39;mse&#39;</span>),</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>    <span class="at">fit_params =</span> <span class="fu">list</span>(<span class="at">epochs =</span> <span class="dv">5</span>, <span class="at">batch_size =</span> <span class="dv">32</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>  )</span></code></pre></div>
+<ul>
+<li>For <code>learner_type = &quot;caret&quot;</code>, it defaults to a linear
+regression with no re sampling (see <a href="https://topepo.github.io/caret/model-training-and-tuning.html" class="uri">https://topepo.github.io/caret/model-training-and-tuning.html</a>
+for details about the caret train parameters):</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>default_model_params <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">formula =</span> Y <span class="sc">~</span> ., <span class="at">caret_params =</span> <span class="fu">list</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;none&quot;</span>)))</span></code></pre></div>
+<p>Please note that the list should contain an element
+<code>formula</code> where <code>Y</code> refers to the vector that you
+provided as input for <code>Y</code>, and an element named
+<code>caret_params</code> containing the parameters of your choice to
+pass to <code>caret::train</code> (see full list of parameters here: <a href="https://topepo.github.io/caret/model-training-and-tuning.html" class="uri">https://topepo.github.io/caret/model-training-and-tuning.html</a>).</p></li>
+</ul>
+</div>
+<div id="case-of-categorical-target-y" class="section level3">
+<h3>Case of categorical target Y</h3>
+<p>When using <code>caret</code>, note that if <code>Y</code> is
+categorical and you are using <code>model_type = &quot;s_learner&quot;</code>, you
+need to choose a classification method outputting probabilities
+i.e. using the key word <code>classProbs = TRUE</code> in
+<code>trainControl</code>, see the following as an example with a Random
+Forest Classifier:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>model_params <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">formula =</span> Y <span class="sc">~</span> ., <span class="at">caret_params =</span> <span class="fu">list</span>(<span class="at">method =</span> <span class="st">&quot;rf&quot;</span>, <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;none&quot;</span>, <span class="at">classProbs =</span> <span class="cn">TRUE</span>)))</span></code></pre></div>
+<p>Also note that all data inputs needs to be of numeric types, hence
+for <code>Y</code> categorical, it should contain numeric values
+representing the class of each observation. No need to use the type
+<code>factor</code> for <code>cram_policy()</code>.</p>
+<p>Note on M-learner: If <code>model_type = &quot;m_learner&quot;</code>, keep in
+mind that Y is transformed internally. M-learner requires a propensity
+model and transformed outcomes:</p>
+<ul>
+<li>propensity is an argument of cram_policy, if <code>NULL</code>, it
+defaults to</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>propensity <span class="ot">&lt;-</span> <span class="cf">function</span>(X) {<span class="fu">rep</span>(<span class="fl">0.5</span>, <span class="fu">nrow</span>(X))}</span></code></pre></div>
+<ul>
+<li>outcome_transform is an element of model_params accessed as
+follows:</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>outcome_transform <span class="ot">&lt;-</span> model_params<span class="sc">$</span>m_learner_outcome_transform</span></code></pre></div>
+<p>If <code>NULL</code>, it defaults to</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>outcome_transform <span class="ot">&lt;-</span> <span class="cf">function</span>(Y, D, prop_score) {Y <span class="sc">*</span> D <span class="sc">/</span> prop_score <span class="sc">-</span> Y <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> D) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> prop_score)}<span class="st">`</span><span class="at">, where </span><span class="st">`</span>prop_score<span class="st">`</span><span class="at"> is </span><span class="st">`</span><span class="fu">propensity</span>(X)</span></code></pre></div>
+<p>Thus, the Y transformed might not be categorical even though Y is
+categorical i.e. you might want to use a regression model.</p>
+<p>See the following reference for more details about the M-learner:</p>
+<p>Jia, Z., Imai, K., &amp; Li, M. L. (2024). <em>The Cram Method for
+Efficient Simultaneous Learning and Evaluation</em>, URL: <a href="https://www.hbs.edu/ris/Publication%20Files/2403.07031v1_a83462e0-145b-4675-99d5-9754aa65d786.pdf" class="uri">https://www.hbs.edu/ris/Publication%20Files/2403.07031v1_a83462e0-145b-4675-99d5-9754aa65d786.pdf</a>.</p>
+<p>You can override any of these defaults by passing a custom list to
+model_params including any parameter name defined in the underlying
+package of the model that you chose, namely
+<code>grf::causal_forest()</code>, <code>glmnet::cv.glmnet()</code>,
+<code>keras</code> and <code>caret::train()</code></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># Significance level for confidence intervals (default = 95%)</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span>  </span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co"># Run the CRAM policy method</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">cram_policy</span>(</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>  X, D, Y,</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  <span class="at">batch =</span> batch,</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>  <span class="at">model_type =</span> model_type,</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>  <span class="at">learner_type =</span> learner_type,</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>  <span class="at">baseline_policy =</span> baseline_policy,</span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>  <span class="at">parallelize_batch =</span> parallelize_batch,</span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>  <span class="at">model_params =</span> model_params,</span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>  <span class="at">alpha =</span> alpha</span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a>)</span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a><span class="co"># Display the results</span></span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a><span class="fu">print</span>(result)</span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a><span class="co">#&gt; $raw_results</span></span>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a><span class="co">#&gt;                        Metric   Value</span></span>
+<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a><span class="co">#&gt; 1              Delta Estimate 0.23208</span></span>
+<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a><span class="co">#&gt; 2        Delta Standard Error 0.05862</span></span>
+<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a><span class="co">#&gt; 3              Delta CI Lower 0.11718</span></span>
+<span id="cb9-23"><a href="#cb9-23" tabindex="-1"></a><span class="co">#&gt; 4              Delta CI Upper 0.34697</span></span>
+<span id="cb9-24"><a href="#cb9-24" tabindex="-1"></a><span class="co">#&gt; 5       Policy Value Estimate 0.21751</span></span>
+<span id="cb9-25"><a href="#cb9-25" tabindex="-1"></a><span class="co">#&gt; 6 Policy Value Standard Error 0.05237</span></span>
+<span id="cb9-26"><a href="#cb9-26" tabindex="-1"></a><span class="co">#&gt; 7       Policy Value CI Lower 0.11486</span></span>
+<span id="cb9-27"><a href="#cb9-27" tabindex="-1"></a><span class="co">#&gt; 8       Policy Value CI Upper 0.32016</span></span>
+<span id="cb9-28"><a href="#cb9-28" tabindex="-1"></a><span class="co">#&gt; 9          Proportion Treated 0.60500</span></span>
+<span id="cb9-29"><a href="#cb9-29" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb9-30"><a href="#cb9-30" tabindex="-1"></a><span class="co">#&gt; $interactive_table</span></span>
+<span id="cb9-31"><a href="#cb9-31" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb9-32"><a href="#cb9-32" tabindex="-1"></a><span class="co">#&gt; $final_policy_model</span></span>
+<span id="cb9-33"><a href="#cb9-33" tabindex="-1"></a><span class="co">#&gt; GRF forest object of type causal_forest </span></span>
+<span id="cb9-34"><a href="#cb9-34" tabindex="-1"></a><span class="co">#&gt; Number of trees: 100 </span></span>
+<span id="cb9-35"><a href="#cb9-35" tabindex="-1"></a><span class="co">#&gt; Number of training samples: 1000 </span></span>
+<span id="cb9-36"><a href="#cb9-36" tabindex="-1"></a><span class="co">#&gt; Variable importance: </span></span>
+<span id="cb9-37"><a href="#cb9-37" tabindex="-1"></a><span class="co">#&gt;     1     2     3 </span></span>
+<span id="cb9-38"><a href="#cb9-38" tabindex="-1"></a><span class="co">#&gt; 0.437 0.350 0.213</span></span></code></pre></div>
+</div>
+</div>
+<div id="custom-model" class="section level2">
+<h2>Custom Model</h2>
+<p>To use your own model for policy learning, the trigger is to set
+<code>model_type = NULL</code> and to supply two user-defined
+functions:</p>
+<div id="custom_fitx-y-d-..." class="section level3">
+<h3>1. <code>custom_fit(X, Y, D, ...)</code></h3>
+<p>This function takes the training data: covariates <code>X</code>,
+outcomes <code>Y</code>, and binary treatment indicators <code>D</code>,
+and returns a fitted model object.<br />
+You may also define and use additional parameters (e.g., number of
+folds, regularization settings, etc.) within the function body.</p>
+<ul>
+<li><code>X</code>: a matrix or data frame of features</li>
+<li><code>Y</code>: a numeric outcome vector<br />
+</li>
+<li><code>D</code>: a binary vector indicating treatment assignment (0
+or 1)</li>
+</ul>
+<p><strong>Example</strong>: Custom X-learner with Ridge regression and
+5-fold cross-validation</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">library</span>(glmnet)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co">#&gt; Loading required package: Matrix</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co">#&gt; Loaded glmnet 4.1-8</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>custom_fit <span class="ot">&lt;-</span> <span class="cf">function</span>(X, Y, D, <span class="at">n_folds =</span> <span class="dv">5</span>) {</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>  treated_indices <span class="ot">&lt;-</span> <span class="fu">which</span>(D <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>  control_indices <span class="ot">&lt;-</span> <span class="fu">which</span>(D <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>  X_treated <span class="ot">&lt;-</span> X[treated_indices, ]</span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>  Y_treated <span class="ot">&lt;-</span> Y[treated_indices]</span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>  X_control <span class="ot">&lt;-</span> X[control_indices, ]</span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>  Y_control <span class="ot">&lt;-</span> Y[control_indices]</span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>  model_treated <span class="ot">&lt;-</span> <span class="fu">cv.glmnet</span>(<span class="fu">as.matrix</span>(X_treated), Y_treated, <span class="at">alpha =</span> <span class="dv">0</span>, <span class="at">nfolds =</span> n_folds)</span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a>  model_control <span class="ot">&lt;-</span> <span class="fu">cv.glmnet</span>(<span class="fu">as.matrix</span>(X_control), Y_control, <span class="at">alpha =</span> <span class="dv">0</span>, <span class="at">nfolds =</span> n_folds)</span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>  tau_control <span class="ot">&lt;-</span> Y_treated <span class="sc">-</span> <span class="fu">predict</span>(model_control, <span class="fu">as.matrix</span>(X_treated), <span class="at">s =</span> <span class="st">&quot;lambda.min&quot;</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a>  tau_treated <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_treated, <span class="fu">as.matrix</span>(X_control), <span class="at">s =</span> <span class="st">&quot;lambda.min&quot;</span>) <span class="sc">-</span> Y_control</span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a>  X_combined <span class="ot">&lt;-</span> <span class="fu">rbind</span>(X_treated, X_control)</span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a>  tau_combined <span class="ot">&lt;-</span> <span class="fu">c</span>(tau_control, tau_treated)</span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a>  weights <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">length</span>(tau_control)), <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">length</span>(tau_treated)))</span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a>  final_model <span class="ot">&lt;-</span> <span class="fu">cv.glmnet</span>(<span class="fu">as.matrix</span>(X_combined), tau_combined, <span class="at">alpha =</span> <span class="dv">0</span>, <span class="at">weights =</span> weights, <span class="at">nfolds =</span> n_folds)</span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a>  <span class="fu">return</span>(final_model)</span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="custom_predictmodel-x_new-d_new" class="section level3">
+<h3>2. <code>custom_predict(model, X_new, D_new)</code></h3>
+<p>This function uses the fitted model to generate a <strong>binary
+treatment decision</strong> for each individual in
+<code>X_new</code>.</p>
+<p>It should return a vector of 0s and 1s, indicating whether to assign
+treatment (<code>1</code>) or not (<code>0</code>).<br />
+You may also incorporate a custom threshold or post-processing logic
+within the function.</p>
+<p><strong>Example</strong>: Apply the decision rule — treat if the
+estimated CATE is greater than 0</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>custom_predict <span class="ot">&lt;-</span> <span class="cf">function</span>(model, X_new, D_new) {</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>  cate <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, <span class="fu">as.matrix</span>(X_new), <span class="at">s =</span> <span class="st">&quot;lambda.min&quot;</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>  <span class="co"># Apply decision rule: treat if CATE &gt; 0</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>  <span class="fu">as.integer</span>(cate <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="use-cram_policy-with-custom_fit-and-custom_predict" class="section level3">
+<h3>3. Use <code>cram_policy()</code> with <code>custom_fit()</code> and
+<code>custom_predict()</code></h3>
+<p>Once both <code>custom_fit()</code> and <code>custom_predict()</code>
+are defined, you can integrate them into the Cram framework by passing
+them to <code>cram_policy()</code> as shown below (do not forget to set
+<code>model_type = NULL</code>):</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>experiment_results <span class="ot">&lt;-</span> <span class="fu">cram_policy</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  X, D, Y,</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  <span class="at">batch =</span> <span class="dv">20</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>  <span class="at">model_type =</span> <span class="cn">NULL</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>  <span class="at">custom_fit =</span> custom_fit,</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>  <span class="at">custom_predict =</span> custom_predict,</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.05</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>)</span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="fu">print</span>(experiment_results)</span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt; $raw_results</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co">#&gt;                        Metric   Value</span></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt; 1              Delta Estimate 0.22542</span></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co">#&gt; 2        Delta Standard Error 0.06004</span></span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="co">#&gt; 3              Delta CI Lower 0.10774</span></span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co">#&gt; 4              Delta CI Upper 0.34310</span></span>
+<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="co">#&gt; 5       Policy Value Estimate 0.21085</span></span>
+<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a><span class="co">#&gt; 6 Policy Value Standard Error 0.04280</span></span>
+<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="co">#&gt; 7       Policy Value CI Lower 0.12696</span></span>
+<span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a><span class="co">#&gt; 8       Policy Value CI Upper 0.29475</span></span>
+<span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a><span class="co">#&gt; 9          Proportion Treated 0.54500</span></span>
+<span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-22"><a href="#cb12-22" tabindex="-1"></a><span class="co">#&gt; $interactive_table</span></span>
+<span id="cb12-23"><a href="#cb12-23" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-24"><a href="#cb12-24" tabindex="-1"></a><span class="co">#&gt; $final_policy_model</span></span>
+<span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-26"><a href="#cb12-26" tabindex="-1"></a><span class="co">#&gt; Call:  cv.glmnet(x = as.matrix(X_combined), y = tau_combined, weights = weights,      nfolds = n_folds, alpha = 0) </span></span>
+<span id="cb12-27"><a href="#cb12-27" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a><span class="co">#&gt; Measure: Mean-Squared Error </span></span>
+<span id="cb12-29"><a href="#cb12-29" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-30"><a href="#cb12-30" tabindex="-1"></a><span class="co">#&gt;     Lambda Index Measure      SE Nonzero</span></span>
+<span id="cb12-31"><a href="#cb12-31" tabindex="-1"></a><span class="co">#&gt; min 0.0395   100  0.9219 0.02942       3</span></span>
+<span id="cb12-32"><a href="#cb12-32" tabindex="-1"></a><span class="co">#&gt; 1se 0.5868    71  0.9505 0.03367       3</span></span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<ul>
+<li>Jia, Z., Imai, K., &amp; Li, M. L. (2024). <em>The Cram Method for
+Efficient Simultaneous Learning and Evaluation</em>, URL: <a href="https://www.hbs.edu/ris/Publication%20Files/2403.07031v1_a83462e0-145b-4675-99d5-9754aa65d786.pdf" class="uri">https://www.hbs.edu/ris/Publication%20Files/2403.07031v1_a83462e0-145b-4675-99d5-9754aa65d786.pdf</a>.<br />
+</li>
+<li>Künzel, S. R., Sekhon, J. S., Bickel, P. J., &amp; Yu, B. (2019).
+Metalearners for estimating heterogeneous treatment effects using
+machine learning. Proceedings of the National Academy of Sciences of the
+United States of America, 116(10), 4156–4165. <a href="https://doi.org/10.1073/pnas.1804597116" class="uri">https://doi.org/10.1073/pnas.1804597116</a></li>
+<li>Wager, S., &amp; Athey, S. (2018). Estimation and inference of
+heterogeneous treatment effects using random forests. Journal of the
+American Statistical Association, 113(523), 1228-1242.</li>
+<li>Athey, S., &amp; Imbens, G. (2016). Recursive partitioning for
+heterogeneous causal effects. Proceedings of the National Academy of
+Sciences, 113(27), 7353-7360.</li>
+</ul>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

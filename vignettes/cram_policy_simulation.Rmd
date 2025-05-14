@@ -1,0 +1,136 @@
+---
+title: "Cram Policy Simulation"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Cram Policy Simulation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(cramR)
+library(data.table)
+library(DT)
+```
+
+This vignette demonstrates the simulation capabilities included in the cramR package. The simulation code is primarily intended for reproducing experimental results from the associated theoretical papers and for validating the performance of the Cram method under controlled data-generating processes. While not intended for direct use in practical applications, these simulations allow users to benchmark and understand the empirical behavior of the method in synthetic environments.
+
+## 🎯 What is `cram_simulation()`?
+
+The `cram_simulation()` function performs **simultaneous policy learning and evaluation** under a **known data-generating process (DGP)**. It is useful for:
+
+- Benchmarking the performance of the Cram method on controlled simulated datasets
+- Measuring empirical bias, variance, and confidence interval coverage of the estimates
+- Supporting both synthetic covariate generation from a known DGP provided by the user (`dgp_X`), and empirical covariate generation based on an input dataset (`X`) using row-wise bootstrapping, which approximates the empirical distribution of the observed covariates.
+
+---
+
+## 📦 Inputs Overview
+
+You must supply either:
+
+- `X`: a dataset to bootstrap from (empirical DGP)  
+**or**
+
+- `dgp_X`: a function that simulates covariates  
+
+You must also define:
+
+- `dgp_D(X)`: treatment assignment function given `X`  
+- `dgp_Y(D, X)`: outcome generation function given `D` and `X`
+
+---
+
+## 📘 Example: Cram Policy Simulation
+
+```{r}
+set.seed(123)
+
+# dgp_X <- function(n) {
+#   data.table::data.table(
+#     binary     = rbinom(n, 1, 0.5),
+#     discrete   = sample(1:5, n, replace = TRUE),
+#     continuous = rnorm(n)
+#   )
+# }
+
+n <- 100
+
+X_data <- data.table::data.table(
+    binary     = rbinom(n, 1, 0.5),
+    discrete   = sample(1:5, n, replace = TRUE),
+    continuous = rnorm(n)
+  )
+
+
+dgp_D <- function(X) rbinom(nrow(X), 1, 0.5)
+
+dgp_Y <- function(D, X) {
+  theta <- ifelse(
+    X[, binary] == 1 & X[, discrete] <= 2,  # Group 1: High benefit
+    1,
+    ifelse(X[, binary] == 0 & X[, discrete] >= 4,  # Group 3: Negative benefit
+           -1,
+           0.1)  # Group 2: Neutral effect
+  )
+  Y <- D * (theta + rnorm(length(D), mean = 0, sd = 1)) +
+    (1 - D) * rnorm(length(D))  # Outcome for untreated
+  return(Y)
+}
+
+# Parameters
+nb_simulations <- 100
+nb_simulations_truth <- 200
+batch <- 5
+
+# Perform CRAM simulation
+result <- cram_simulation(
+  X = X_data,
+  dgp_D = dgp_D,
+  dgp_Y = dgp_Y,
+  batch = batch,
+  nb_simulations = nb_simulations,
+  nb_simulations_truth = nb_simulations_truth,
+  sample_size = 500
+)
+```
+
+---
+
+## 📊 Output Summary
+
+```{r}
+result$raw_results
+```
+
+```{r}
+result$interactive_table
+```
+
+Returns a list containing:
+
+- `raw_results`: A summary of key averaged metrics  
+- `interactive_table`: An interactive HTML widget for quick exploration  
+
+| Metric                             | Meaning                                      |
+|------------------------------------|----------------------------------------------|
+| Average Proportion Treated         | Share of samples treated by learned policy   |
+| Average Delta Estimate             | Mean treatment effect (Δ) estimate           |
+| Delta Empirical Bias               | Bias of Δ estimate against truth             |
+| Delta Empirical Coverage           | CI coverage of Δ estimate                    |
+| Average Policy Value Estimate      | Mean value of final policy                   |
+| Policy Value Empirical Bias        | Bias against true policy value               |
+| Policy Value Empirical Coverage    | CI coverage of policy value                  |
+
+---
+
+```{r cleanup-autograph, include=FALSE}
+autograph_files <- list.files(tempdir(), pattern = "^__autograph_generated_file.*\\.py$", full.names = TRUE)
+if (length(autograph_files) > 0) {
+  try(unlink(autograph_files, recursive = TRUE, force = TRUE), silent = TRUE)
+}
+

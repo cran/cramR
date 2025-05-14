@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Quick Start with CRAM</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Quick Start with CRAM</h1>
+
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>The <strong>Cram</strong> package provides a unified framework
+for:</p>
+<ul>
+<li><p>🧠 <strong>Cram Policy (<code>cram_policy</code>)</strong>: Learn
+and evaluate individualized binary treatment rules using Cram. Supports
+flexible models, including causal forests and custom learners. Common
+examples include whether to treat a patient, send a discount offer, or
+provide financial aid based on estimated benefit.</p></li>
+<li><p>📈 <strong>Cram ML (<code>cram_ml</code>)</strong>: Learn and
+evaluate standard machine learning models using Cram. It estimates the
+expected loss at the population level, giving you a reliable measure of
+how well the final model is likely to generalize to new data. Supports
+flexible training via caret or custom learners, and allows evaluation
+with user-defined loss metrics. Ideal for classification, regression,
+and other predictive tasks.</p></li>
+<li><p>🎰 <strong>Cram Bandit (<code>cram_bandit</code>)</strong>:
+Perform on-policy evaluation of contextual bandit algorithms using Cram.
+Supports both real data and simulation environments with built-in
+policies.</p></li>
+</ul>
+<p>This vignette walks through these <strong>three core
+modules</strong>.</p>
+<hr />
+</div>
+<div id="cram-user-file" class="section level2">
+<h2>Cram User file</h2>
+<p>For reproducible use cases, see the example script provided in the
+Cram GitHub repository:</p>
+<p><a href="https://github.com/yanisvdc/cramR/blob/master/inst/examples/user_cram.R">View
+<code>user_cram.R</code> on GitHub</a></p>
+<hr />
+</div>
+<div id="cram_policy-binary-policy-learning-evaluation" class="section level2">
+<h2>1. <code>cram_policy()</code> — Binary Policy Learning &amp;
+Evaluation</h2>
+<div id="generate-simulated-data" class="section level3">
+<h3>Generate Simulated Data</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>generate_data <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  X <span class="ot">&lt;-</span> <span class="fu">data.table</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    <span class="at">binary =</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.5</span>),</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>    <span class="at">discrete =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, n, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>    <span class="at">continuous =</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  )</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  D <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.5</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>  treatment_effect <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(X<span class="sc">$</span>binary <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> X<span class="sc">$</span>discrete <span class="sc">&lt;=</span> <span class="dv">2</span>, <span class="dv">1</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>                       <span class="fu">ifelse</span>(X<span class="sc">$</span>binary <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> X<span class="sc">$</span>discrete <span class="sc">&gt;=</span> <span class="dv">4</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="fl">0.1</span>))</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>  Y <span class="ot">&lt;-</span> D <span class="sc">*</span> (treatment_effect <span class="sc">+</span> <span class="fu">rnorm</span>(n)) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> D) <span class="sc">*</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">X =</span> X, <span class="at">D =</span> D, <span class="at">Y =</span> Y)</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>}</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">generate_data</span>(<span class="dv">1000</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>X <span class="ot">&lt;-</span> data<span class="sc">$</span>X; D <span class="ot">&lt;-</span> data<span class="sc">$</span>D; Y <span class="ot">&lt;-</span> data<span class="sc">$</span>Y</span></code></pre></div>
+</div>
+<div id="run-cram_policy-with-causal-forest" class="section level3">
+<h3>Run <code>cram_policy()</code> with causal forest</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">cram_policy</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  X, D, Y,</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">batch =</span> <span class="dv">20</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="at">model_type =</span> <span class="st">&quot;causal_forest&quot;</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="at">learner_type =</span> <span class="cn">NULL</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="at">baseline_policy =</span> <span class="fu">as.list</span>(<span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">nrow</span>(X))),</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.05</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>)</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="fu">print</span>(res)</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#&gt; $raw_results</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt;                        Metric   Value</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#&gt; 1              Delta Estimate 0.23208</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co">#&gt; 2        Delta Standard Error 0.05862</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co">#&gt; 3              Delta CI Lower 0.11718</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt; 4              Delta CI Upper 0.34697</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co">#&gt; 5       Policy Value Estimate 0.21751</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="co">#&gt; 6 Policy Value Standard Error 0.05237</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt; 7       Policy Value CI Lower 0.11486</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&gt; 8       Policy Value CI Upper 0.32016</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="co">#&gt; 9          Proportion Treated 0.60500</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="co">#&gt; $interactive_table</span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co">#&gt; $final_policy_model</span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co">#&gt; GRF forest object of type causal_forest </span></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt; Number of trees: 100 </span></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; Number of training samples: 1000 </span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt; Variable importance: </span></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co">#&gt;     1     2     3 </span></span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="co">#&gt; 0.437 0.350 0.213</span></span></code></pre></div>
+</div>
+<div id="case-of-categorical-target-y" class="section level3">
+<h3>Case of categorical target Y</h3>
+<p>Use <code>caret</code> and choose a classification method outputting
+probabilities i.e. using the key word <code>classProbs = TRUE</code> in
+<code>trainControl</code>, see the following as an example with a Random
+Forest Classifier:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>model_params <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">formula =</span> Y <span class="sc">~</span> ., <span class="at">caret_params =</span> <span class="fu">list</span>(<span class="at">method =</span> <span class="st">&quot;rf&quot;</span>, <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;none&quot;</span>, <span class="at">classProbs =</span> <span class="cn">TRUE</span>)))</span></code></pre></div>
+<p>Also note that all data inputs needs to be of numeric types, hence
+for <code>Y</code> categorical, it should contain numeric values
+representing the class of each observation. No need to use the type
+<code>factor</code> for <code>cram_policy()</code>.</p>
+</div>
+<div id="custom-models-with-cram_policy" class="section level3">
+<h3>Custom Models with <code>cram_policy()</code></h3>
+<p>Set <code>model_params</code> to <code>NULL</code> and specify
+<code>custom_fit</code> and <code>custom_predict</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>custom_fit <span class="ot">&lt;-</span> <span class="cf">function</span>(X, Y, D, <span class="at">n_folds =</span> <span class="dv">5</span>) {</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  treated <span class="ot">&lt;-</span> <span class="fu">which</span>(D <span class="sc">==</span> <span class="dv">1</span>); control <span class="ot">&lt;-</span> <span class="fu">which</span>(D <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  m1 <span class="ot">&lt;-</span> <span class="fu">cv.glmnet</span>(<span class="fu">as.matrix</span>(X[treated, ]), Y[treated], <span class="at">alpha =</span> <span class="dv">0</span>, <span class="at">nfolds =</span> n_folds)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  m0 <span class="ot">&lt;-</span> <span class="fu">cv.glmnet</span>(<span class="fu">as.matrix</span>(X[control, ]), Y[control], <span class="at">alpha =</span> <span class="dv">0</span>, <span class="at">nfolds =</span> n_folds)</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  tau1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(m1, <span class="fu">as.matrix</span>(X[control, ]), <span class="at">s =</span> <span class="st">&quot;lambda.min&quot;</span>) <span class="sc">-</span> Y[control]</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  tau0 <span class="ot">&lt;-</span> Y[treated] <span class="sc">-</span> <span class="fu">predict</span>(m0, <span class="fu">as.matrix</span>(X[treated, ]), <span class="at">s =</span> <span class="st">&quot;lambda.min&quot;</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  tau <span class="ot">&lt;-</span> <span class="fu">c</span>(tau0, tau1); X_all <span class="ot">&lt;-</span> <span class="fu">rbind</span>(X[treated, ], X[control, ])</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  final_model <span class="ot">&lt;-</span> <span class="fu">cv.glmnet</span>(<span class="fu">as.matrix</span>(X_all), tau, <span class="at">alpha =</span> <span class="dv">0</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  final_model</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>}</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>custom_predict <span class="ot">&lt;-</span> <span class="cf">function</span>(model, X, D) {</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>  <span class="fu">as.numeric</span>(<span class="fu">predict</span>(model, <span class="fu">as.matrix</span>(X), <span class="at">s =</span> <span class="st">&quot;lambda.min&quot;</span>) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>}</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">cram_policy</span>(</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>  X, D, Y,</span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>  <span class="at">batch =</span> <span class="dv">20</span>,</span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>  <span class="at">model_type =</span> <span class="cn">NULL</span>,</span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>  <span class="at">custom_fit =</span> custom_fit,</span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>  <span class="at">custom_predict =</span> custom_predict</span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>)</span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="fu">print</span>(res)</span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a><span class="co">#&gt; $raw_results</span></span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="co">#&gt;                        Metric   Value</span></span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="co">#&gt; 1              Delta Estimate 0.22542</span></span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="co">#&gt; 2        Delta Standard Error 0.06004</span></span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a><span class="co">#&gt; 3              Delta CI Lower 0.10774</span></span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a><span class="co">#&gt; 4              Delta CI Upper 0.34310</span></span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a><span class="co">#&gt; 5       Policy Value Estimate 0.21085</span></span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a><span class="co">#&gt; 6 Policy Value Standard Error 0.04280</span></span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a><span class="co">#&gt; 7       Policy Value CI Lower 0.12696</span></span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a><span class="co">#&gt; 8       Policy Value CI Upper 0.29475</span></span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a><span class="co">#&gt; 9          Proportion Treated 0.54500</span></span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a><span class="co">#&gt; $interactive_table</span></span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a><span class="co">#&gt; $final_policy_model</span></span>
+<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a><span class="co">#&gt; Call:  cv.glmnet(x = as.matrix(X_all), y = tau, alpha = 0) </span></span>
+<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a><span class="co">#&gt; Measure: Mean-Squared Error </span></span>
+<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a><span class="co">#&gt;     Lambda Index Measure      SE Nonzero</span></span>
+<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a><span class="co">#&gt; min 0.0395   100  0.9194 0.02589       3</span></span>
+<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a><span class="co">#&gt; 1se 0.4872    73  0.9423 0.03002       3</span></span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="cram_ml-ml-learning-evaluation" class="section level2">
+<h2>2. <code>cram_ml()</code> — ML Learning &amp; Evaluation</h2>
+<div id="regression-with-cram_ml" class="section level3">
+<h3>Regression with <code>cram_ml()</code></h3>
+<p>Specify <code>formula</code> and <code>caret_params</code>conforming
+to the popular <code>caret::train()</code> and set an individual loss
+under <code>loss_name</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>data_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">x1 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="at">x2 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="at">x3 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="at">Y =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>)</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>caret_params <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>)</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">cram_ml</span>(</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>  <span class="at">data =</span> data_df,</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>  <span class="at">formula =</span> Y <span class="sc">~</span> .,</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>  <span class="at">batch =</span> <span class="dv">5</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>  <span class="at">loss_name =</span> <span class="st">&quot;se&quot;</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>  <span class="at">caret_params =</span> caret_params</span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>)</span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="fu">print</span>(res)</span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt; $raw_results</span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt;                         Metric    Value</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt; 1       Expected Loss Estimate  0.86429</span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co">#&gt; 2 Expected Loss Standard Error  0.73665</span></span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="co">#&gt; 3       Expected Loss CI Lower -0.57952</span></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="co">#&gt; 4       Expected Loss CI Upper  2.30809</span></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a><span class="co">#&gt; $interactive_table</span></span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a><span class="co">#&gt; $final_ml_model</span></span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a><span class="co">#&gt; Linear Regression </span></span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a><span class="co">#&gt; 100 samples</span></span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a><span class="co">#&gt;   3 predictor</span></span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a><span class="co">#&gt; No pre-processing</span></span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a><span class="co">#&gt; Resampling: None</span></span></code></pre></div>
+</div>
+<div id="classification-with-cram_ml" class="section level3">
+<h3>Classification with <code>cram_ml()</code></h3>
+<p>All data inputs needs to be of numeric types, hence for
+<code>Y</code> categorical, it should contain numeric values
+representing the class of each observation. No need to use the type
+<code>factor</code> for <code>cram_ml()</code>.</p>
+<div id="case-1-predicting-class-labels" class="section level4">
+<h4>Case 1: Predicting Class labels</h4>
+<p>In this case, the model outputs hard predictions (labels, e.g. 0, 1,
+2 etc.), and the metric used is <strong>classification
+accuracy</strong>—the proportion of correctly predicted labels.</p>
+<ul>
+<li>Use <code>loss_name = &quot;accuracy&quot;</code></li>
+<li>Set <code>classProbs = FALSE</code> in
+<code>trainControl</code></li>
+<li>Set <code>classify = TRUE</code> in <code>cram_ml()</code></li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co"># Generate binary classification dataset</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>X_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x1 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="at">x2 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="at">x3 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>))</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>Y_data <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="fu">nrow</span>(X_data), <span class="dv">1</span>, <span class="fl">0.5</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>data_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(X_data, <span class="at">Y =</span> Y_data)</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co"># Define caret parameters: predict labels (default behavior)</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>caret_params_rf <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;rf&quot;</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>)</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co"># Run CRAM ML with accuracy as loss</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">cram_ml</span>(</span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>  <span class="at">data =</span> data_df,</span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>  <span class="at">formula =</span> Y <span class="sc">~</span> .,</span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>  <span class="at">batch =</span> <span class="dv">5</span>,</span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a>  <span class="at">loss_name =</span> <span class="st">&quot;accuracy&quot;</span>,</span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>  <span class="at">caret_params =</span> caret_params_rf,</span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>  <span class="at">classify =</span> <span class="cn">TRUE</span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a>)</span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a><span class="fu">print</span>(result)</span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a><span class="co">#&gt; $raw_results</span></span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a><span class="co">#&gt;                         Metric    Value</span></span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a><span class="co">#&gt; 1       Expected Loss Estimate  0.48750</span></span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a><span class="co">#&gt; 2 Expected Loss Standard Error  0.43071</span></span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a><span class="co">#&gt; 3       Expected Loss CI Lower -0.35668</span></span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a><span class="co">#&gt; 4       Expected Loss CI Upper  1.33168</span></span>
+<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a><span class="co">#&gt; $interactive_table</span></span>
+<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a><span class="co">#&gt; $final_ml_model</span></span>
+<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a><span class="co">#&gt; Random Forest </span></span>
+<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a><span class="co">#&gt; 100 samples</span></span>
+<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a><span class="co">#&gt;   3 predictor</span></span>
+<span id="cb6-39"><a href="#cb6-39" tabindex="-1"></a><span class="co">#&gt;   2 classes: &#39;class0&#39;, &#39;class1&#39; </span></span>
+<span id="cb6-40"><a href="#cb6-40" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-41"><a href="#cb6-41" tabindex="-1"></a><span class="co">#&gt; No pre-processing</span></span>
+<span id="cb6-42"><a href="#cb6-42" tabindex="-1"></a><span class="co">#&gt; Resampling: None</span></span></code></pre></div>
+</div>
+<div id="case-2-predicting-class-probabilities" class="section level4">
+<h4>Case 2: Predicting Class Probabilities</h4>
+<p>In this setup, the model outputs <strong>class
+probabilities</strong>, and the loss is evaluated using
+<strong>logarithmic loss (<code>logloss</code>)</strong>—a standard
+metric for probabilistic classification.</p>
+<ul>
+<li>Use <code>loss_name = &quot;logloss&quot;</code></li>
+<li>Set <code>classProbs = TRUE</code> in <code>trainControl</code></li>
+<li>Set <code>classify = TRUE</code> in <code>cram_ml()</code></li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co"># Generate binary classification dataset</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>X_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x1 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="at">x2 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="at">x3 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>))</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>Y_data <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="fu">nrow</span>(X_data), <span class="dv">1</span>, <span class="fl">0.5</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>data_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(X_data, <span class="at">Y =</span> Y_data)</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co"># Define caret parameters for probability output</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>caret_params_rf_probs <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;rf&quot;</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;none&quot;</span>, <span class="at">classProbs =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>)</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co"># Run CRAM ML with logloss as the evaluation loss</span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">cram_ml</span>(</span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>  <span class="at">data =</span> data_df,</span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>  <span class="at">formula =</span> Y <span class="sc">~</span> .,</span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a>  <span class="at">batch =</span> <span class="dv">5</span>,</span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a>  <span class="at">loss_name =</span> <span class="st">&quot;logloss&quot;</span>,</span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a>  <span class="at">caret_params =</span> caret_params_rf_probs,</span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a>  <span class="at">classify =</span> <span class="cn">TRUE</span></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a>)</span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a><span class="fu">print</span>(result)</span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="co">#&gt; $raw_results</span></span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a><span class="co">#&gt;                         Metric    Value</span></span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a><span class="co">#&gt; 1       Expected Loss Estimate  0.93225</span></span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a><span class="co">#&gt; 2 Expected Loss Standard Error  0.48118</span></span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a><span class="co">#&gt; 3       Expected Loss CI Lower -0.01085</span></span>
+<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a><span class="co">#&gt; 4       Expected Loss CI Upper  1.87534</span></span>
+<span id="cb7-31"><a href="#cb7-31" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-32"><a href="#cb7-32" tabindex="-1"></a><span class="co">#&gt; $interactive_table</span></span>
+<span id="cb7-33"><a href="#cb7-33" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-34"><a href="#cb7-34" tabindex="-1"></a><span class="co">#&gt; $final_ml_model</span></span>
+<span id="cb7-35"><a href="#cb7-35" tabindex="-1"></a><span class="co">#&gt; Random Forest </span></span>
+<span id="cb7-36"><a href="#cb7-36" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-37"><a href="#cb7-37" tabindex="-1"></a><span class="co">#&gt; 100 samples</span></span>
+<span id="cb7-38"><a href="#cb7-38" tabindex="-1"></a><span class="co">#&gt;   3 predictor</span></span>
+<span id="cb7-39"><a href="#cb7-39" tabindex="-1"></a><span class="co">#&gt;   2 classes: &#39;class0&#39;, &#39;class1&#39; </span></span>
+<span id="cb7-40"><a href="#cb7-40" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-41"><a href="#cb7-41" tabindex="-1"></a><span class="co">#&gt; No pre-processing</span></span>
+<span id="cb7-42"><a href="#cb7-42" tabindex="-1"></a><span class="co">#&gt; Resampling: None</span></span></code></pre></div>
+<p>In addition to using built-in learners via <code>caret</code>,
+<code>cram_ml()</code> also supports <strong>fully custom model
+workflows</strong>. You can specify your own:</p>
+<ul>
+<li>Model fitting function (<code>custom_fit</code>)</li>
+<li>Prediction function (<code>custom_predict</code>)</li>
+<li>Loss function (<code>custom_loss</code>)</li>
+</ul>
+<p>See the vignette “Cram ML” for more details.</p>
+<hr />
+</div>
+</div>
+</div>
+<div id="cram_bandit-contextual-bandits-for-on-policy-statistical-evaluation" class="section level2">
+<h2>3. <code>cram_bandit()</code> — Contextual Bandits for On-policy
+Statistical Evaluation</h2>
+<p>Specify:</p>
+<ul>
+<li><p><code>pi</code>: An array of shape <strong>(T × B, T, K)</strong>
+or <strong>(T × B, T)</strong>, where:</p>
+<ul>
+<li><p><span class="math inline">\(T\)</span> is the number of learning
+steps (or policy updates)</p></li>
+<li><p><span class="math inline">\(B\)</span> is the batch size</p></li>
+<li><p><span class="math inline">\(K\)</span> is the number of
+arms</p></li>
+<li><p><span class="math inline">\(T \times B\)</span> is the total
+number of contexts</p></li>
+<li><p>In the natural 3D version, <code>pi[j, t, a]</code> gives the
+probability that the policy <span class="math inline">\(\hat{\pi}_t\)</span> assigns arm <code>a</code> to
+context <span class="math inline">\(X_j\)</span>. In the 2D version, we
+only keep the probabilities assigned to the <strong>chosen arm</strong>
+<span class="math inline">\(A_j\)</span> for each context <span class="math inline">\(X_j\)</span> in the historical data - and not the
+probabilities for all of the arms <span class="math inline">\(a\)</span>
+under each context <span class="math inline">\(X_j\)</span>.</p></li>
+</ul></li>
+<li><p><code>arm</code>: A vector of length <span class="math inline">\(T \times B\)</span> indicating which arm was
+selected in each context.</p></li>
+<li><p><code>reward</code>: A vector of observed rewards of length <span class="math inline">\(T \times B\)</span>.</p></li>
+<li><p><code>batch</code>: (optional) Integer batch size <span class="math inline">\(B\)</span>. Default is 1.</p></li>
+<li><p><code>alpha</code>: Significance level for confidence
+intervals.</p></li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="dv">100</span>; K <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>pi <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="fu">runif</span>(T <span class="sc">*</span> T <span class="sc">*</span> K, <span class="fl">0.1</span>, <span class="dv">1</span>), <span class="at">dim =</span> <span class="fu">c</span>(T, T, K))</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="cf">for</span> (t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>T) <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>T) pi[j, t, ] <span class="ot">&lt;-</span> pi[j, t, ] <span class="sc">/</span> <span class="fu">sum</span>(pi[j, t, ])</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>arm <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>K, T, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>reward <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(T, <span class="dv">1</span>, <span class="fl">0.5</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">cram_bandit</span>(pi, arm, reward, <span class="at">batch=</span><span class="dv">1</span>, <span class="at">alpha=</span><span class="fl">0.05</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="fu">print</span>(res)</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; $raw_results</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt;                        Metric   Value</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt; 1       Policy Value Estimate 0.67621</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt; 2 Policy Value Standard Error 0.04394</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt; 3       Policy Value CI Lower 0.59008</span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt; 4       Policy Value CI Upper 0.76234</span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt; $interactive_table</span></span></code></pre></div>
+<hr />
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<ul>
+<li><code>cram_policy()</code>: Learn and evaluate a binary policy.</li>
+<li><code>cram_ml()</code>: Learn and evaluate ML models.</li>
+<li><code>cram_bandit()</code>: Cramming contextual bandits for
+on-policy statistical evaluation.</li>
+</ul>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

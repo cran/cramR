@@ -1,0 +1,174 @@
+---
+title: "Cram Bandit Simulation"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Cram Bandit Simulation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(cramR)
+library(data.table)
+library(DT)
+```
+
+
+This vignette demonstrates the simulation capabilities included in the cramR package. The simulation code is primarily intended for reproducing experimental results from the associated theoretical papers and for validating the performance of the Cram method under controlled data-generating processes. While not intended for direct use in practical applications, these simulations allow users to benchmark and understand the empirical behavior of the method in synthetic environments.
+
+## What is `cram_bandit_sim()`?
+
+The `cram_bandit_sim()` function runs **on-policy simulation** for contextual bandit algorithms using the Cram method. It evaluates the statistical properties of policy value estimates such as:
+
+- **Empirical Bias on Policy Value**
+- **Average relative error on Policy Value**
+- **RMSE using relative errors on Policy Value**
+- **Empirical Coverage of Confidence Intervals**
+
+
+This is useful for benchmarking bandit policies under controlled, simulated environments.
+
+---
+
+## 📋 Inputs
+
+You need to provide:
+
+- `bandit`:  
+  A **contextual bandit environment object** that generates contexts (feature vectors) and rewards for each arm.  
+  Example: `ContextualLinearBandit`, or any object following the [contextual package](https://github.com/Nth-iteration-labs/contextual) interface.
+
+- `policy`:  
+  A **policy object** that takes in a context and selects an arm (action) at each timestep.  
+  Example: `BatchContextualLinTSPolicy`, or any compatible [contextual package](https://github.com/Nth-iteration-labs/contextual) policy.
+
+- `horizon`:  
+  An **integer** specifying the number of timesteps (rounds) per simulation.  
+  Each simulation will run for exactly `horizon` steps.
+
+- `simulations`:  
+  An **integer** specifying the number of independent Monte Carlo simulations to perform.  
+  Each simulation will independently reset the environment and policy.
+
+- Optional Parameters:
+  - `alpha`:  
+    A **numeric value** between 0 and 1 specifying the significance level for confidence intervals when calculating empirical coverage.  
+    Default: `0.05` (for 95% confidence intervals).
+  
+  - `seed`:  
+    An optional **integer** to set the random seed for reproducibility.  
+    If `NULL`, no seed is set.
+
+  - `do_parallel`:  
+    A **logical** value indicating whether to parallelize the simulations across available CPU cores.  
+  Default: `FALSE` (parallelization disabled).  
+  We recommend keeping `do_parallel = FALSE` unless necessary, as parallel execution can make it harder for the underlying [`contextual`](https://github.com/Nth-iteration-labs/contextual) package to reliably track simulation history.  
+  In particular, parallel runs may cause missing or incomplete entries in the recorded history, which are then discarded during analysis.
+  
+---
+
+## Example: Cram Bandit Simulation
+
+```{r contextual-example, fig.alt="Cumulative regret curve over time for the selected policy"}
+
+# Number of time steps
+horizon       <- 500L
+
+# Number of simulations 
+simulations   <- 100L
+
+# Number of arms
+k = 4
+
+# Number of context features
+d= 3
+
+# Reward beta parameters of linear model (the outcome generation models, one for each arm, are linear with arm-specific parameters betas)
+list_betas <- cramR::get_betas(simulations, d, k)
+
+# Define the contextual linear bandit, where sigma is the scale of the noise in the outcome linear model
+bandit        <- cramR::ContextualLinearBandit$new(k = k, d = d, list_betas = list_betas, sigma = 0.3)
+
+# Define the policy object (choose between Contextual Epsilon Greedy, UCB Disjoint and Thompson Sampling)
+policy <- cramR::BatchContextualEpsilonGreedyPolicy$new(epsilon=0.1, batch_size=5)
+# policy <- cramR::BatchLinUCBDisjointPolicyEpsilon$new(alpha=1.0, epsilon=0.1, batch_size=1)
+# policy <- cramR::BatchContextualLinTSPolicy$new(v = 0.1, batch_size=1)
+
+
+sim <- cram_bandit_sim(horizon, simulations,
+                            bandit, policy,
+                            alpha=0.05, do_parallel = FALSE)
+  
+```
+
+---
+
+## What Does It Return?
+
+The output contains:
+
+A `data.table` with one row per simulation, including:
+
+- `estimate`: estimated policy value  
+- `variance_est`: estimated variance  
+- `estimand`: true policy value (computed from held-out context data)  
+- `prediction_error`: `estimate - estimand`  
+- `est_rel_error`: relative error on estimate  
+- `variance_prediction_error`: relative error on variance  
+- `ci_lower`, `ci_upper`: bounds of the confidence interval  
+- `std_error`: standard error  
+
+Result tables (raw and interactive), reporting:
+
+- **Empirical Bias on Policy Value**
+- **Average relative error on Policy Value**
+- **RMSE using relative errors on Policy Value**
+- **Empirical Coverage of Confidence Intervals**
+
+---
+
+## Example Output Preview
+
+```{r contextual-estimates, fig.alt = "First rows of simulation output estimates"}
+head(sim$estimates)
+```
+
+```{r contextual-table, fig.alt = "Table of results"}
+sim$interactive_table
+```
+
+---
+
+## Notes
+
+- `list_betas` is updated internally to track the true parameters per simulation  
+- The first simulation is discarded by design (due to writing issues in `contextual`) even when `do_parallel = FALSE`.
+
+---
+
+## Recommended Use Cases
+
+- Validate bandit policies under repeated experiments  
+- Compare bias and variance of different policy types  
+- Analyze empirical coverage of confidence intervals  
+- Stress-test policies under different batch sizes, sigma levels, or dimensions
+
+---
+
+## References
+
+This simulation builds on:
+
+- Contextual bandits (`contextual` package)  
+- On-policy Cram estimation  
+
+```{r cleanup-autograph, include=FALSE}
+autograph_files <- list.files(tempdir(), pattern = "^__autograph_generated_file.*\\.py$", full.names = TRUE)
+if (length(autograph_files) > 0) {
+  try(unlink(autograph_files, recursive = TRUE, force = TRUE), silent = TRUE)
+}
+

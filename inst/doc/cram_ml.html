@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Cram ML</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Cram ML</h1>
+
+
+
+<div id="cram-ml" class="section level1">
+<h1>Cram ML</h1>
+<p>In the article <em>“Introduction &amp; Cram Policy Part 1”</em>, we
+introduced the Cram method, which enables simultaneous learning and
+evaluation of a binary policy. In this section, we extend the framework
+to machine learning tasks through the <code>cram_ml()</code>
+function.</p>
+<div id="output-of-cram-ml" class="section level2">
+<h2>Output of Cram ML</h2>
+<p>Cram ML outputs the <strong>Expected Loss Estimate</strong>, which
+refers to the following statistical quantity:<br />
+<span class="math display">\[
+R(\hat{\pi}) = \mathbb{E}_{\tilde{X} \sim D} \left[ L(\tilde{X},
+\hat{\pi}) \right],
+\]</span> The Expected Loss Estimate represents the average loss that
+would be incurred if a model, trained on a given data sample, were
+deployed across the entire population. In the Cram framework, this
+corresponds to estimating how the learned model generalizes to unseen
+data—i.e., how it performs on new observations <span class="math inline">\(\tilde{X}\)</span> drawn from the true
+data-generating distribution <span class="math inline">\(D\)</span>,
+independently of the training data.</p>
+<p>This expected loss serves as the <strong>population-level
+performance</strong> metric (analogous to a policy value in policy
+learning), and Cram provides a <strong>consistent, low-bias
+estimate</strong> of this quantity by combining models trained on
+sequential batches and evaluating them on held-out observations.</p>
+</div>
+<div id="built-in-model" class="section level2">
+<h2>Built-in Model</h2>
+<p>To illustrate the use of <code>cram_ml()</code>, we begin by
+generating a synthetic dataset for a regression task. The data consists
+of three independent covariates and a continuous outcome.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>X_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x1 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="at">x2 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="at">x3 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>))</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>Y_data <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>data_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(X_data, <span class="at">Y =</span> Y_data)</span></code></pre></div>
+<p>This section illustrates how to use <code>cram_ml()</code> with
+built-in modeling options available through the <code>cramR</code>
+package. The function integrates with the <code>caret</code> framework,
+allowing users to specify a learning algorithm, a loss function, and a
+batching strategy to evaluate model performance.</p>
+<p>Beyond <code>caret</code>, <code>cram_ml()</code> also supports fully
+custom model training, prediction, and loss functions, making it
+suitable for virtually any machine learning task — including regression
+and classification.</p>
+<p>The <code>cram_ml()</code> function offers extensive flexibility
+through its <code>loss_name</code> and <code>caret_params</code>
+arguments.</p>
+<div id="loss_name-argument" class="section level3">
+<h3>loss_name argument</h3>
+<p>The <code>loss_name</code> argument specifies the performance metric
+used to evaluate the model at each batch. Note that Cram needs to
+calculate individual losses (i.e. map a data point and prediction to a
+loss value) that are then internally averaged across batches and
+observations to form the <strong>Expected Loss Estimate</strong>.
+Depending on the task, losses are interpreted as follows:</p>
+<p>We denote <span class="math inline">\(x_i\)</span> a data point and
+<span class="math inline">\(\hat{\pi}_k\)</span> a model trained on the
+first k batches of data to illustrate how the individual losses are
+computed using the built-in loss names of the package.</p>
+<div id="regression-losses" class="section level4">
+<h4>Regression Losses</h4>
+<ul>
+<li><p><strong>Squared Error (<code>&quot;se&quot;</code>)</strong>:<br />
+<span class="math display">\[
+L(x_i, \hat{\pi}_k) = (\hat{y}_i - y_i)^2
+\]</span> Measures the squared difference between predicted and actual
+outcomes.</p></li>
+<li><p><strong>Absolute Error (<code>&quot;ae&quot;</code>)</strong>:<br />
+<span class="math display">\[
+L(x_i, \hat{\pi}_k) = |\hat{y}_i - y_i|
+\]</span> Captures the magnitude of prediction error, regardless of
+direction.</p></li>
+</ul>
+</div>
+<div id="classification-losses" class="section level4">
+<h4>Classification Losses</h4>
+<ul>
+<li><p><strong>Accuracy (<code>&quot;accuracy&quot;</code>)</strong>:<br />
+<span class="math display">\[
+L(x_i, \hat{\pi}_k) = 1\{\hat{y}_i = y_i\}
+\]</span> It is more a performance metric than a loss here - Cram allows
+you to define any performance metric that you want to estimate and
+accuracy is a built-in example. The metric is 1 for correct predictions,
+0 for incorrect ones.</p></li>
+<li><p><strong>Logarithmic Loss (<code>&quot;logloss&quot;</code>)</strong>:</p>
+<p>The <code>&quot;logloss&quot;</code> loss function measures how well predicted
+class probabilities align with the true class labels. It applies to
+<strong>both binary and multiclass classification tasks</strong>.</p>
+<p>For a given observation <span class="math inline">\(i\)</span>,
+let:</p>
+<ul>
+<li><p><span class="math inline">\(y_i \in \{c_1, c_2, \dots,
+c_K\}\)</span> be the <strong>true class label</strong>,</p></li>
+<li><p><span class="math inline">\(\hat{p}_k(i, c)\)</span> be the
+<strong>predicted probability</strong> assigned to class <span class="math inline">\(c\)</span> by the model.</p></li>
+</ul>
+<p>The individual log loss is computed as: <span class="math display">\[
+L(x_i, \hat{\pi}_k) = -\log\left( \hat{p}_k(i, y_i) \right)
+\]</span> That is, we take the negative log of the probability assigned
+to the true class.</p></li>
+</ul>
+</div>
+<div id="custom-loss-functions" class="section level4">
+<h4>Custom Loss Functions</h4>
+<p>Users can also define their own custom loss function by providing a
+<code>custom_loss(predictions, data)</code> function that returns a
+vector of individual losses. This allows evaluation of complex models
+with domain-specific metrics (more details in the Custom Model part
+below)</p>
+</div>
+</div>
+<div id="caret_params-argument" class="section level3">
+<h3>caret_params argument</h3>
+<p>The <code>caret_params</code> list defines how the model should be
+trained using the <a href="https://topepo.github.io/caret/model-training-and-tuning.html"><code>caret</code></a>
+package. It can include <strong>any argument supported by
+<code>caret::train()</code></strong>, allowing full control over model
+specification and tuning. Common components include:</p>
+<ul>
+<li><code>method</code>: the machine learning algorithm (e.g.,
+<code>&quot;lm&quot;</code> for linear regression, <code>&quot;rf&quot;</code> for random
+forest, <code>&quot;xgbTree&quot;</code> for XGBoost, <code>&quot;svmLinear&quot;</code> for
+support vector machines)</li>
+<li><code>trControl</code>: the resampling strategy (e.g.,
+<code>trainControl(method = &quot;cv&quot;, number = 5)</code> for 5-fold
+cross-validation, or <code>&quot;none&quot;</code> for training without
+resampling)</li>
+<li><code>tuneGrid</code>: a grid of hyperparameters for tuning (e.g.,
+<code>expand.grid(mtry = c(2, 3, 4))</code>)</li>
+<li><code>metric</code>: the model selection metric used during tuning
+(e.g., <code>&quot;RMSE&quot;</code> or <code>&quot;Accuracy&quot;</code>)</li>
+<li><code>preProcess</code>: optional preprocessing steps (e.g.,
+centering, scaling)</li>
+<li><code>importance</code>: logical flag to compute variable importance
+(useful for tree-based models)</li>
+</ul>
+<p>Refer to the full documentation at <a href="https://topepo.github.io/caret/model-training-and-tuning.html">caret
+model training and tuning</a> for the complete list of supported
+arguments and options.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>caret_params_lm <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>)</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">cram_ml</span>(</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="at">data =</span> data_df,</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="at">formula =</span> Y <span class="sc">~</span> .,</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  <span class="at">batch =</span> <span class="dv">5</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  <span class="at">loss_name =</span> <span class="st">&quot;se&quot;</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  <span class="at">caret_params =</span> caret_params_lm</span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>)</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="fu">print</span>(result)</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co">#&gt; $raw_results</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt;                         Metric    Value</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co">#&gt; 1       Expected Loss Estimate  0.86429</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="co">#&gt; 2 Expected Loss Standard Error  0.73665</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt; 3       Expected Loss CI Lower -0.57952</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&gt; 4       Expected Loss CI Upper  2.30809</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co">#&gt; $interactive_table</span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="co">#&gt; $final_ml_model</span></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co">#&gt; Linear Regression </span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt; 100 samples</span></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt;   3 predictor</span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co">#&gt; No pre-processing</span></span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="co">#&gt; Resampling: None</span></span></code></pre></div>
+</div>
+<div id="case-of-categorical-target-variable" class="section level3">
+<h3>Case of categorical target variable</h3>
+<p>The <code>cram_ml()</code> function can also be used for
+<strong>classification tasks</strong>, whether predicting hard labels or
+class probabilities. This is controlled via the <code>classify</code>
+argument and <code>loss_name</code>. Below, we demonstrate two typical
+use cases.</p>
+<p>Also note that all data inputs needs to be of numeric types, hence
+for <code>Y</code> categorical, it should contain numeric values
+representing the class of each observation. No need to use the type
+<code>factor</code> for <code>cram_ml()</code>.</p>
+<div id="case-1-predicting-class-labels" class="section level4">
+<h4>Case 1: Predicting Class Labels</h4>
+<p>In this case, the model outputs hard predictions (labels, e.g. 0, 1,
+2 etc.), and the metric used is <strong>classification
+accuracy</strong>—the proportion of correctly predicted labels.</p>
+<ul>
+<li>Use <code>loss_name = &quot;accuracy&quot;</code></li>
+<li>Set <code>classProbs = FALSE</code> in
+<code>trainControl</code></li>
+<li>Set <code>classify = TRUE</code> in <code>cram_ml()</code></li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co"># Generate binary classification dataset</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>X_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x1 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="at">x2 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="at">x3 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>))</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>Y_data <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="fu">nrow</span>(X_data), <span class="dv">1</span>, <span class="fl">0.5</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>data_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(X_data, <span class="at">Y =</span> Y_data)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co"># Define caret parameters: predict labels (default behavior)</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>caret_params_rf <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;rf&quot;</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>)</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co"># Run CRAM ML with accuracy as loss</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">cram_ml</span>(</span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>  <span class="at">data =</span> data_df,</span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>  <span class="at">formula =</span> Y <span class="sc">~</span> .,</span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a>  <span class="at">batch =</span> <span class="dv">5</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a>  <span class="at">loss_name =</span> <span class="st">&quot;accuracy&quot;</span>,</span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a>  <span class="at">caret_params =</span> caret_params_rf,</span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a>  <span class="at">classify =</span> <span class="cn">TRUE</span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a>)</span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a><span class="fu">print</span>(result)</span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="co">#&gt; $raw_results</span></span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a><span class="co">#&gt;                         Metric    Value</span></span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a><span class="co">#&gt; 1       Expected Loss Estimate  0.48750</span></span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a><span class="co">#&gt; 2 Expected Loss Standard Error  0.43071</span></span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a><span class="co">#&gt; 3       Expected Loss CI Lower -0.35668</span></span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a><span class="co">#&gt; 4       Expected Loss CI Upper  1.33168</span></span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a><span class="co">#&gt; $interactive_table</span></span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a><span class="co">#&gt; $final_ml_model</span></span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a><span class="co">#&gt; Random Forest </span></span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a><span class="co">#&gt; 100 samples</span></span>
+<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a><span class="co">#&gt;   3 predictor</span></span>
+<span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a><span class="co">#&gt;   2 classes: &#39;class0&#39;, &#39;class1&#39; </span></span>
+<span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-41"><a href="#cb3-41" tabindex="-1"></a><span class="co">#&gt; No pre-processing</span></span>
+<span id="cb3-42"><a href="#cb3-42" tabindex="-1"></a><span class="co">#&gt; Resampling: None</span></span></code></pre></div>
+</div>
+<div id="case-2-predicting-class-probabilities" class="section level4">
+<h4>Case 2: Predicting Class Probabilities</h4>
+<p>In this setup, the model outputs <strong>class
+probabilities</strong>, and the loss is evaluated using
+<strong>logarithmic loss (<code>logloss</code>)</strong>—a standard
+metric for probabilistic classification.</p>
+<ul>
+<li>Use <code>loss_name = &quot;logloss&quot;</code></li>
+<li>Set <code>classProbs = TRUE</code> in <code>trainControl</code></li>
+<li>Set <code>classify = TRUE</code> in <code>cram_ml()</code></li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co"># Generate binary classification dataset</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>X_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x1 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="at">x2 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="at">x3 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>))</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>Y_data <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="fu">nrow</span>(X_data), <span class="dv">1</span>, <span class="fl">0.5</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>data_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(X_data, <span class="at">Y =</span> Y_data)</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co"># Define caret parameters for probability output</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>caret_params_rf_probs <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;rf&quot;</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;none&quot;</span>, <span class="at">classProbs =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>)</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co"># Run CRAM ML with logloss as the evaluation loss</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">cram_ml</span>(</span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>  <span class="at">data =</span> data_df,</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>  <span class="at">formula =</span> Y <span class="sc">~</span> .,</span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>  <span class="at">batch =</span> <span class="dv">5</span>,</span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>  <span class="at">loss_name =</span> <span class="st">&quot;logloss&quot;</span>,</span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>  <span class="at">caret_params =</span> caret_params_rf_probs,</span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>  <span class="at">classify =</span> <span class="cn">TRUE</span></span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>)</span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a><span class="fu">print</span>(result)</span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="co">#&gt; $raw_results</span></span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="co">#&gt;                         Metric    Value</span></span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="co">#&gt; 1       Expected Loss Estimate  0.93225</span></span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a><span class="co">#&gt; 2 Expected Loss Standard Error  0.48118</span></span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a><span class="co">#&gt; 3       Expected Loss CI Lower -0.01085</span></span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a><span class="co">#&gt; 4       Expected Loss CI Upper  1.87534</span></span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a><span class="co">#&gt; $interactive_table</span></span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a><span class="co">#&gt; $final_ml_model</span></span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a><span class="co">#&gt; Random Forest </span></span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a><span class="co">#&gt; 100 samples</span></span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a><span class="co">#&gt;   3 predictor</span></span>
+<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a><span class="co">#&gt;   2 classes: &#39;class0&#39;, &#39;class1&#39; </span></span>
+<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a><span class="co">#&gt; No pre-processing</span></span>
+<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a><span class="co">#&gt; Resampling: None</span></span></code></pre></div>
+<p>Together, these arguments allow users to apply <code>cram_ml()</code>
+using a wide variety of built-in machine learning models and losses. If
+users need to go beyond these built-in choices, we also provide in the
+next section a friendly workflow on how to specify custom models and
+losses with <code>cram_ml()</code>.</p>
+</div>
+</div>
+</div>
+<div id="custom-model" class="section level2">
+<h2>Custom Model</h2>
+<p>In addition to using built-in learners via <code>caret</code>,
+<code>cram_ml()</code> also supports <strong>fully custom model
+workflows</strong>. You can specify your own:</p>
+<ul>
+<li>Model fitting function (<code>custom_fit</code>)</li>
+<li>Prediction function (<code>custom_predict</code>)</li>
+<li>Loss function (<code>custom_loss</code>)</li>
+</ul>
+<p>This offers maximum flexibility, allowing CRAM to evaluate any
+learning model with any performance criterion, including regression,
+classification, or even unsupervised losses such as clustering
+distance.</p>
+<hr />
+<div id="custom_fitdata-..." class="section level3">
+<h3>1. <code>custom_fit(data, ...)</code></h3>
+<p>This function takes a data frame and returns a fitted model. You may
+define additional arguments such as hyperparameters or training
+settings.</p>
+<ul>
+<li><code>data</code>: A data frame that includes both predictors and
+the outcome variable <code>Y</code>.</li>
+</ul>
+<p><strong>Example</strong>: A basic linear model fit on three
+predictors:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>custom_fit <span class="ot">&lt;-</span> <span class="cf">function</span>(data) {</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">lm</span>(Y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3, <span class="at">data =</span> data)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="custom_predictmodel-data" class="section level3">
+<h3>2. <code>custom_predict(model, data)</code></h3>
+<p>This function generates predictions from the fitted model on new
+data. It returns a numeric vector of predicted outcomes.</p>
+<ul>
+<li><code>model</code>: The fitted model returned by
+<code>custom_fit()</code></li>
+<li><code>data</code>: A data frame of new observations (typically
+including all original predictors)</li>
+</ul>
+<p><strong>Example</strong>: Extract predictors and apply a standard
+<code>predict()</code> call:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>custom_predict <span class="ot">&lt;-</span> <span class="cf">function</span>(model, data) {</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  predictors_only <span class="ot">&lt;-</span> data[, <span class="fu">setdiff</span>(<span class="fu">names</span>(data), <span class="st">&quot;Y&quot;</span>), drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="fu">predict</span>(model, <span class="at">newdata =</span> predictors_only)</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="custom_losspredictions-data" class="section level3">
+<h3>3. <code>custom_loss(predictions, data)</code></h3>
+<p>This function defines the loss metric used to evaluate model
+predictions. It should return a numeric vector of <strong>individual
+losses</strong>, one per observation. These are internally aggregated by
+<code>cram_ml()</code> to compute the overall performance.</p>
+<ul>
+<li><code>predictions</code>: A numeric vector of predicted values from
+the model</li>
+<li><code>data</code>: The data frame containing the true outcome values
+(<code>Y</code>)</li>
+</ul>
+<p><strong>Example</strong>: Define a custom loss function using
+<strong>Squared Error (SE)</strong></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>custom_loss <span class="ot">&lt;-</span> <span class="cf">function</span>(predictions, data) {</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  actuals <span class="ot">&lt;-</span> data<span class="sc">$</span>Y</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  se_loss <span class="ot">&lt;-</span> (predictions <span class="sc">-</span> actuals)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="fu">return</span>(se_loss)</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="use-cram_ml-with-custom-functions" class="section level3">
+<h3>4. Use <code>cram_ml()</code> with Custom Functions</h3>
+<p>Once you have defined your custom training, prediction, and loss
+functions, you can pass them directly to <code>cram_ml()</code> as shown
+below, note that <code>caret_params</code> and <code>loss_name</code>
+that were used for built-in functionalities are now
+<code>NULL</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>X_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x1 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="at">x2 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="at">x3 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>Y_data <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>data_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(X_data, <span class="at">Y =</span> Y_data)</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">cram_ml</span>(</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>  <span class="at">data =</span> data_df,</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>  <span class="at">formula =</span> Y <span class="sc">~</span> .,</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>  <span class="at">batch =</span> <span class="dv">5</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>  <span class="at">custom_fit =</span> custom_fit,</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>  <span class="at">custom_predict =</span> custom_predict,</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>  <span class="at">custom_loss =</span> custom_loss</span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>)</span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="fu">print</span>(result)</span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt; $raw_results</span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt;                         Metric    Value</span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt; 1       Expected Loss Estimate  0.86429</span></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt; 2 Expected Loss Standard Error  0.73665</span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt; 3       Expected Loss CI Lower -0.57952</span></span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co">#&gt; 4       Expected Loss CI Upper  2.30809</span></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co">#&gt; $interactive_table</span></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co">#&gt; $final_ml_model</span></span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a><span class="co">#&gt; lm(formula = Y ~ x1 + x2 + x3, data = data)</span></span>
+<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a><span class="co">#&gt; (Intercept)           x1           x2           x3  </span></span>
+<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a><span class="co">#&gt;    0.031503     0.057754     0.008829    -0.031611</span></span></code></pre></div>
+<hr />
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
