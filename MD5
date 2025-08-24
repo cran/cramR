@@ -1,8 +1,8 @@
-4b66898df5ecc975efd8d760dcfc24a9 *DESCRIPTION
+24451b34c0053d56705ce7c0bd7467f4 *DESCRIPTION
 41337df9a17c924d90448cf7634fabe8 *NAMESPACE
 214faffcfedf9b3d6a2d09b1241abbcc *NEWS.md
 92be64ef86bef1804a1935f0d000bb9f *R/armed_bandit_est.R
-9395e920387cffea9a11db2c2b6157bd *R/armed_bandit_helpers.R
+88b37421fdb377664f4d9033e38e7104 *R/armed_bandit_helpers.R
 c91c4bcfb38c85284c72287ea01ab602 *R/armed_bandit_var.R
 c21d41ff10155d83055562241bf83f2c *R/cram_bandit.R
 d09043a57fe0159fc5185f07d794338c *R/cram_bandit_sim.R
@@ -27,7 +27,7 @@ fcd0a304e28f0809a3cba23d9942596c *R/model_predict.R
 d3c50c4a8628632e2cfd7a74004ade9f *R/validate_params.R
 6736a42b85cbea0a59207896b7737102 *R/validate_params_fnn.R
 a9a0297477ea7916bb999510bf0617c7 *R/zzz.R
-ce263a95bb148b4d1218953b01ae0178 *README.md
+113cec2cbb9daca0f6bc1c02ed937f11 *README.md
 7831e00ad16781f7551e48463c9eed55 *build/vignette.rds
 3d5374b66ceb3122f5e9e57eceeb78c2 *inst/CITATION
 20d2181f20402010103f97de227e7c5b *inst/doc/cram_bandit.R
@@ -38,7 +38,7 @@ cfe7993968a934338e9480d6919d8aa3 *inst/doc/cram_bandit.html
 d3f887dc85566b3d7c154cdc28e4518c *inst/doc/cram_bandit_helpers.html
 9c83d36a88608ee1bd73253d1ef3c068 *inst/doc/cram_bandit_simulation.R
 f7efe2a05c4f7ce2f37360e018532987 *inst/doc/cram_bandit_simulation.Rmd
-f3d9a21b01f66db7df83b45124aa698c *inst/doc/cram_bandit_simulation.html
+183902ecba7dcdb979084e06dbb6fe69 *inst/doc/cram_bandit_simulation.html
 cd1ec266ba57a612209cb70d037d597c *inst/doc/cram_ml.R
 cf019f1990db88c4fa484606ed3bfc26 *inst/doc/cram_ml.Rmd
 d269e2b113d2df810e6eaa072ca26af9 *inst/doc/cram_ml.html
@@ -55,11 +55,11 @@ af49ea23f638a602d64b353f86be89cb *inst/doc/cram_policy_part_2.R
 a4ee44f06084bb2dbe26407a2c328f28 *inst/doc/quickstart.Rmd
 87deb22baddf17a467b90167788d62c9 *inst/doc/quickstart.html
 6b2b8bd494bdc804828be0cbadf517e0 *inst/examples/user_cram.R
-7c1ef3181304f55d58bb3726d9802da0 *man/BatchContextualEpsilonGreedyPolicy.Rd
-a28ddc9910481b9de7341d926619e458 *man/BatchContextualLinTSPolicy.Rd
-31a8f82028a8e88be79400e8926b1c2a *man/BatchLinUCBDisjointPolicyEpsilon.Rd
+fa9ea4efa764e7a177b5492a793ced39 *man/BatchContextualEpsilonGreedyPolicy.Rd
+5cef420d2586216b4dfb88bf2f1c4983 *man/BatchContextualLinTSPolicy.Rd
+f8200564c7d971d659bf6c2cfef15900 *man/BatchLinUCBDisjointPolicyEpsilon.Rd
 2f5bd3aa2558f54a29dd3c1c4e382506 *man/ContextualLinearBandit.Rd
-1d6556e433cbab331bea0ade264391d8 *man/LinUCBDisjointPolicyEpsilon.Rd
+907777ebac83df47e1f510ebd0414900 *man/LinUCBDisjointPolicyEpsilon.Rd
 b093d7b532502ce7771f2cc2dba447de *man/cram_bandit.Rd
 c19b1dc6673e1a3f2822916ee5a59546 *man/cram_bandit_est.Rd
 dff34149c49f0e98742ac9302f33c51c *man/cram_bandit_sim.Rd

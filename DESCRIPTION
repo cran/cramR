@@ -1,8 +1,8 @@
 Package: cramR
 Type: Package
 Title: Cram Method for Efficient Simultaneous Learning and Evaluation
-Version: 0.1.0
-Date: 2025-05-11
+Version: 0.1.1
+Date: 2025-08-17
 Authors@R: c(
     person("Yanis", "Vandecasteele", email = "yanisvdc.ensae@gmail.com", role = c("cre", "aut")),
     person("Michael Lingzhi", "Li", email = "mili@hbs.edu", role = "ctb"),
@@ -31,11 +31,11 @@ VignetteBuilder: knitr, rmarkdown
 Config/testthat/edition: 3
 Config/Needs/citation: yes
 NeedsCompilation: no
-Packaged: 2025-05-11 23:19:56 UTC; yanis
+Packaged: 2025-08-17 21:58:52 UTC; yanis
 Author: Yanis Vandecasteele [cre, aut],
   Michael Lingzhi Li [ctb],
   Kosuke Imai [ctb],
   Zeyang Jia [ctb],
   Longlin Wang [ctb]
 Repository: CRAN
-Date/Publication: 2025-05-14 08:00:02 UTC
+Date/Publication: 2025-08-24 17:40:02 UTC

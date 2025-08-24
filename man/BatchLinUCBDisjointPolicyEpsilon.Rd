@@ -20,7 +20,7 @@ Implements the disjoint LinUCB algorithm with upper confidence bounds and epsilo
 }
 
 \section{Super class}{
-\code{cramR::NA}
+\code{cramR::NA} -> \code{BatchLinUCBDisjointPolicyEpsilon}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -42,11 +42,11 @@ Implements the disjoint LinUCB algorithm with upper confidence bounds and epsilo
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-NA-new}{\code{BatchLinUCBDisjointPolicyEpsilon$new()}}
-\item \href{#method-NA-set_parameters}{\code{BatchLinUCBDisjointPolicyEpsilon$set_parameters()}}
-\item \href{#method-NA-get_action}{\code{BatchLinUCBDisjointPolicyEpsilon$get_action()}}
-\item \href{#method-NA-set_reward}{\code{BatchLinUCBDisjointPolicyEpsilon$set_reward()}}
-\item \href{#method-unknown-clone}{\code{BatchLinUCBDisjointPolicyEpsilon$clone()}}
+\item \href{#method-BatchLinUCBDisjointPolicyEpsilon-new}{\code{BatchLinUCBDisjointPolicyEpsilon$new()}}
+\item \href{#method-BatchLinUCBDisjointPolicyEpsilon-set_parameters}{\code{BatchLinUCBDisjointPolicyEpsilon$set_parameters()}}
+\item \href{#method-BatchLinUCBDisjointPolicyEpsilon-get_action}{\code{BatchLinUCBDisjointPolicyEpsilon$get_action()}}
+\item \href{#method-BatchLinUCBDisjointPolicyEpsilon-set_reward}{\code{BatchLinUCBDisjointPolicyEpsilon$set_reward()}}
+\item \href{#method-BatchLinUCBDisjointPolicyEpsilon-clone}{\code{BatchLinUCBDisjointPolicyEpsilon$clone()}}
 }
 }
 \if{html}{\out{
@@ -58,8 +58,8 @@ Implements the disjoint LinUCB algorithm with upper confidence bounds and epsilo
 </details>
 }}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-new"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-new}{}}}
+\if{html}{\out{<a id="method-BatchLinUCBDisjointPolicyEpsilon-new"></a>}}
+\if{latex}{\out{\hypertarget{method-BatchLinUCBDisjointPolicyEpsilon-new}{}}}
 \subsection{Method \code{new()}}{
 Constructor for batched LinUCB with epsilon-greedy exploration.
 \subsection{Usage}{
@@ -79,8 +79,8 @@ Constructor for batched LinUCB with epsilon-greedy exploration.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-set_parameters"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-set_parameters}{}}}
+\if{html}{\out{<a id="method-BatchLinUCBDisjointPolicyEpsilon-set_parameters"></a>}}
+\if{latex}{\out{\hypertarget{method-BatchLinUCBDisjointPolicyEpsilon-set_parameters}{}}}
 \subsection{Method \code{set_parameters()}}{
 Initialize arm-specific parameter containers.
 \subsection{Usage}{
@@ -96,8 +96,8 @@ Initialize arm-specific parameter containers.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-get_action"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-get_action}{}}}
+\if{html}{\out{<a id="method-BatchLinUCBDisjointPolicyEpsilon-get_action"></a>}}
+\if{latex}{\out{\hypertarget{method-BatchLinUCBDisjointPolicyEpsilon-get_action}{}}}
 \subsection{Method \code{get_action()}}{
 Chooses an arm based on UCB and epsilon-greedy sampling.
 \subsection{Usage}{
@@ -118,8 +118,8 @@ A list with the selected action.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-set_reward"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-set_reward}{}}}
+\if{html}{\out{<a id="method-BatchLinUCBDisjointPolicyEpsilon-set_reward"></a>}}
+\if{latex}{\out{\hypertarget{method-BatchLinUCBDisjointPolicyEpsilon-set_reward}{}}}
 \subsection{Method \code{set_reward()}}{
 Updates arm-specific sufficient statistics based on observed reward.
 Parameter updates occur only at the end of a batch.
@@ -145,8 +145,8 @@ Updated internal model parameters.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-unknown-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-unknown-clone}{}}}
+\if{html}{\out{<a id="method-BatchLinUCBDisjointPolicyEpsilon-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-BatchLinUCBDisjointPolicyEpsilon-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

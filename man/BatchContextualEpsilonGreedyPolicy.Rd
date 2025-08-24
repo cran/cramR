@@ -12,7 +12,7 @@ Batch Contextual Epsilon-Greedy Policy
 Implements an epsilon-greedy exploration strategy for contextual bandits with batched updates.
 }
 \section{Super class}{
-\code{cramR::NA}
+\code{cramR::NA} -> \code{BatchContextualEpsilonGreedyPolicy}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -32,11 +32,11 @@ Implements an epsilon-greedy exploration strategy for contextual bandits with ba
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-NA-new}{\code{BatchContextualEpsilonGreedyPolicy$new()}}
-\item \href{#method-NA-set_parameters}{\code{BatchContextualEpsilonGreedyPolicy$set_parameters()}}
-\item \href{#method-NA-get_action}{\code{BatchContextualEpsilonGreedyPolicy$get_action()}}
-\item \href{#method-NA-set_reward}{\code{BatchContextualEpsilonGreedyPolicy$set_reward()}}
-\item \href{#method-unknown-clone}{\code{BatchContextualEpsilonGreedyPolicy$clone()}}
+\item \href{#method-BatchContextualEpsilonGreedyPolicy-new}{\code{BatchContextualEpsilonGreedyPolicy$new()}}
+\item \href{#method-BatchContextualEpsilonGreedyPolicy-set_parameters}{\code{BatchContextualEpsilonGreedyPolicy$set_parameters()}}
+\item \href{#method-BatchContextualEpsilonGreedyPolicy-get_action}{\code{BatchContextualEpsilonGreedyPolicy$get_action()}}
+\item \href{#method-BatchContextualEpsilonGreedyPolicy-set_reward}{\code{BatchContextualEpsilonGreedyPolicy$set_reward()}}
+\item \href{#method-BatchContextualEpsilonGreedyPolicy-clone}{\code{BatchContextualEpsilonGreedyPolicy$clone()}}
 }
 }
 \if{html}{\out{
@@ -48,8 +48,8 @@ Implements an epsilon-greedy exploration strategy for contextual bandits with ba
 </details>
 }}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-new"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-new}{}}}
+\if{html}{\out{<a id="method-BatchContextualEpsilonGreedyPolicy-new"></a>}}
+\if{latex}{\out{\hypertarget{method-BatchContextualEpsilonGreedyPolicy-new}{}}}
 \subsection{Method \code{new()}}{
 Constructor for the Batch Epsilon-Greedy policy.
 \subsection{Usage}{
@@ -67,8 +67,8 @@ Constructor for the Batch Epsilon-Greedy policy.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-set_parameters"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-set_parameters}{}}}
+\if{html}{\out{<a id="method-BatchContextualEpsilonGreedyPolicy-set_parameters"></a>}}
+\if{latex}{\out{\hypertarget{method-BatchContextualEpsilonGreedyPolicy-set_parameters}{}}}
 \subsection{Method \code{set_parameters()}}{
 Initializes the parameter structures for each arm.
 \subsection{Usage}{
@@ -84,8 +84,8 @@ Initializes the parameter structures for each arm.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-get_action"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-get_action}{}}}
+\if{html}{\out{<a id="method-BatchContextualEpsilonGreedyPolicy-get_action"></a>}}
+\if{latex}{\out{\hypertarget{method-BatchContextualEpsilonGreedyPolicy-get_action}{}}}
 \subsection{Method \code{get_action()}}{
 Chooses an arm based on epsilon-greedy logic and the current estimates.
 \subsection{Usage}{
@@ -106,8 +106,8 @@ A list with the selected action.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-set_reward"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-set_reward}{}}}
+\if{html}{\out{<a id="method-BatchContextualEpsilonGreedyPolicy-set_reward"></a>}}
+\if{latex}{\out{\hypertarget{method-BatchContextualEpsilonGreedyPolicy-set_reward}{}}}
 \subsection{Method \code{set_reward()}}{
 Updates model statistics based on observed reward. Updates occur once per batch.
 \subsection{Usage}{
@@ -132,8 +132,8 @@ Updated parameter estimates.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-unknown-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-unknown-clone}{}}}
+\if{html}{\out{<a id="method-BatchContextualEpsilonGreedyPolicy-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-BatchContextualEpsilonGreedyPolicy-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

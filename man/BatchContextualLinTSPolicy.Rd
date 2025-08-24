@@ -20,7 +20,7 @@ Implements Thompson Sampling for linear contextual bandits with batch updates.
 }
 
 \section{Super class}{
-\code{cramR::NA}
+\code{cramR::NA} -> \code{BatchContextualLinTSPolicy}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -40,11 +40,11 @@ Implements Thompson Sampling for linear contextual bandits with batch updates.
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-NA-new}{\code{BatchContextualLinTSPolicy$new()}}
-\item \href{#method-NA-set_parameters}{\code{BatchContextualLinTSPolicy$set_parameters()}}
-\item \href{#method-NA-get_action}{\code{BatchContextualLinTSPolicy$get_action()}}
-\item \href{#method-NA-set_reward}{\code{BatchContextualLinTSPolicy$set_reward()}}
-\item \href{#method-unknown-clone}{\code{BatchContextualLinTSPolicy$clone()}}
+\item \href{#method-BatchContextualLinTSPolicy-new}{\code{BatchContextualLinTSPolicy$new()}}
+\item \href{#method-BatchContextualLinTSPolicy-set_parameters}{\code{BatchContextualLinTSPolicy$set_parameters()}}
+\item \href{#method-BatchContextualLinTSPolicy-get_action}{\code{BatchContextualLinTSPolicy$get_action()}}
+\item \href{#method-BatchContextualLinTSPolicy-set_reward}{\code{BatchContextualLinTSPolicy$set_reward()}}
+\item \href{#method-BatchContextualLinTSPolicy-clone}{\code{BatchContextualLinTSPolicy$clone()}}
 }
 }
 \if{html}{\out{
@@ -56,8 +56,8 @@ Implements Thompson Sampling for linear contextual bandits with batch updates.
 </details>
 }}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-new"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-new}{}}}
+\if{html}{\out{<a id="method-BatchContextualLinTSPolicy-new"></a>}}
+\if{latex}{\out{\hypertarget{method-BatchContextualLinTSPolicy-new}{}}}
 \subsection{Method \code{new()}}{
 Constructor for the batch-based Thompson Sampling policy.
 \subsection{Usage}{
@@ -75,8 +75,8 @@ Constructor for the batch-based Thompson Sampling policy.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-set_parameters"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-set_parameters}{}}}
+\if{html}{\out{<a id="method-BatchContextualLinTSPolicy-set_parameters"></a>}}
+\if{latex}{\out{\hypertarget{method-BatchContextualLinTSPolicy-set_parameters}{}}}
 \subsection{Method \code{set_parameters()}}{
 Initializes per-arm sufficient statistics.
 \subsection{Usage}{
@@ -92,8 +92,8 @@ Initializes per-arm sufficient statistics.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-get_action"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-get_action}{}}}
+\if{html}{\out{<a id="method-BatchContextualLinTSPolicy-get_action"></a>}}
+\if{latex}{\out{\hypertarget{method-BatchContextualLinTSPolicy-get_action}{}}}
 \subsection{Method \code{get_action()}}{
 Samples from the posterior distribution of expected rewards and selects an action.
 \subsection{Usage}{
@@ -114,8 +114,8 @@ A list with the chosen arm (`choice`).
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-set_reward"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-set_reward}{}}}
+\if{html}{\out{<a id="method-BatchContextualLinTSPolicy-set_reward"></a>}}
+\if{latex}{\out{\hypertarget{method-BatchContextualLinTSPolicy-set_reward}{}}}
 \subsection{Method \code{set_reward()}}{
 Updates Gram matrix and response vector for the chosen arm.
 Parameters are refreshed every `batch_size` rounds.
@@ -141,8 +141,8 @@ Updated internal parameters.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-unknown-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-unknown-clone}{}}}
+\if{html}{\out{<a id="method-BatchContextualLinTSPolicy-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-BatchContextualLinTSPolicy-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

@@ -2453,8 +2453,11 @@ ContextualLinearBandit <- R6::R6Class(
 #' - `get_action(t, context)`: Selects an arm using epsilon-greedy UCB.
 #' - `set_reward(t, context, action, reward)`: Updates internal statistics based on observed reward.
 #'
+#' @name LinUCBDisjointPolicyEpsilon
+#' @rdname LinUCBDisjointPolicyEpsilon
 #' @export
 LinUCBDisjointPolicyEpsilon <- R6::R6Class(
+  "LinUCBDisjointPolicyEpsilon",
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
@@ -2549,8 +2552,11 @@ LinUCBDisjointPolicyEpsilon <- R6::R6Class(
 #' @field b_cc List of reward-weighted context sums (one per arm), updated batch-wise.
 #' @field class_name Internal class name identifier.
 #'
+#' @name BatchContextualEpsilonGreedyPolicy
+#' @rdname BatchContextualEpsilonGreedyPolicy
 #' @export
 BatchContextualEpsilonGreedyPolicy <- R6::R6Class(
+  "BatchContextualEpsilonGreedyPolicy",
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
@@ -2652,8 +2658,11 @@ BatchContextualEpsilonGreedyPolicy <- R6::R6Class(
 #' - `get_action(t, context)`: Selects an arm using UCB scores and epsilon-greedy rule.
 #' - `set_reward(t, context, action, reward)`: Updates statistics and refreshes model at batch intervals.
 #'
+#' @name BatchLinUCBDisjointPolicyEpsilon
+#' @rdname BatchLinUCBDisjointPolicyEpsilon
 #' @export
 BatchLinUCBDisjointPolicyEpsilon <- R6::R6Class(
+  "BatchLinUCBDisjointPolicyEpsilon",
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
@@ -2760,8 +2769,11 @@ BatchLinUCBDisjointPolicyEpsilon <- R6::R6Class(
 #' - `get_action(t, context)`: Samples from the posterior and selects action.
 #' - `set_reward(t, context, action, reward)`: Updates posterior statistics using observed feedback.
 #'
+#' @name BatchContextualLinTSPolicy
+#' @rdname BatchContextualLinTSPolicy
 #' @export
 BatchContextualLinTSPolicy <- R6::R6Class(
+  "BatchContextualLinTSPolicy",
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
